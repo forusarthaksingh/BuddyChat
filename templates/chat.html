@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Chat - Rooms</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="sidebar">
+            <h2>Welcome, {{ username }}</h2>
+            <h3>Create a Room</h3>
+            <form id="createRoomForm" method="POST" action="/create_room">
+                <input type="text" name="room_name" placeholder="Room Name" required>
+                <input type="password" name="room_password" placeholder="Room Password" required>
+                <button type="submit">Create Room</button>
+            </form>
+
+        <br>    <h3>Join a Room</h3>
+            <form method="POST" action="/join_room">
+                <input type="text" name="room_name" placeholder="Room Name" required>
+                <input type="password" name="room_password" placeholder="Room Password" required>
+                <button type="submit">Join Room</button>
+            </form>
+
+    
+          <br>  <a href="/logout" class="logout"><button>Logout</button></a>
+        
+        
+
+<script>
+document.getElementById("createRoomForm").onsubmit = function() {
+    console.log("Creating room...");
+};
+</script>
+
+        
+            
+        
+    
+
+</body>
+</html>

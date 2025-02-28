@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Chat - Room</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="sidebar">
+            <h2>Room: {{ room }}</h2>
+            <p>Welcome, {{ username }}</p>
+            <button id="leaveRoom">Leave Room</button>
+        </div>
+
+        <div class="chat-area">
+            <div id="messages">
+                {% for msg in messages %}
+                <p><strong>{{ msg.username }}:</strong> {{ msg.message }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="messageInput" placeholder="Type a message...">
+                <button id="sendMessage">Send</button>
+                <input type="file" id="fileInput">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="/static/script.js"></script>
+    <script>
+        var username = "{{ username }}";
+        var room = "{{ room }}";
+
+    var socket = io();
+
+    // Emit join event when the page loads
+    socket.emit("join", { room: room });
+
+    document.getElementById("sendMessage").onclick = function() {
+        var message = document.getElementById("messageInput").value;
+        if (message.trim() !== "") {
+            socket.emit("message", { room: room, message: message });
+            document.getElementById("messageInput").value = "";
+        }
+    };
+
+    // Listen for messages
+    socket.on("message", function(data) {
+        var msgContainer = document.getElementById("messages");
+        var msgElement = document.createElement("p");
+        msgElement.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+        msgContainer.appendChild(msgElement);
+    });
+
+    document.getElementById("leaveRoom").onclick = function() {
+        socket.emit("leave", { room: room });
+        window.location.href = "/chat"; // Redirect back to chat page
+    };
+
+
+    </script>
+
+    
+
+
+
+</body>
+</html>
