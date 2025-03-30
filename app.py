@@ -20,7 +20,7 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    password = db.Column(db.String(200), unique=False, nullable=False)
 
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -95,7 +95,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Account created! You can now log in.", "success")
+        
         return redirect(url_for("index"))
 
     return render_template("signup.html")
